@@ -8,6 +8,8 @@
  * - GetVideoCaptionsOutput - The return type for the getVideoCaptions function.
  */
 
+import { CaptionDerivation } from './CaptionDerivation';
+import Logger from '@/lib/Logger';
 import {ai} from '@/ai/ai-instance';
 import {z} from 'genkit';
 
@@ -42,14 +44,32 @@ Video URL: {{{videoUrl}}}`,
 });
 
 const getVideoCaptionsFlow = ai.defineFlow<
-  typeof GetVideoCaptionsInputSchema,
-  typeof GetVideoCaptionsOutputSchema
->({
-  name: 'getVideoCaptionsFlow',
-  inputSchema: GetVideoCaptionsInputSchema,
-  outputSchema: GetVideoCaptionsOutputSchema,
-},
-async input => {
-  const {output} = await prompt(input);
-  return output!;
-});
+    typeof GetVideoCaptionsInputSchema,
+    typeof GetVideoCaptionsOutputSchema
+  >({
+      name: 'getVideoCaptionsFlow',
+      inputSchema: GetVideoCaptionsInputSchema,
+      outputSchema: GetVideoCaptionsOutputSchema,
+    },
+    async input => {
+      const logger = new Logger();
+      logger.log(`Input videoUrl: ${input.videoUrl}`);
+
+      let { output } = await prompt(input);
+      logger.log(`Initial prompt output: ${JSON.stringify(output)}`);
+
+      if (output){
+        if (!output.captions) {
+          const CapDeriv = new CaptionDerivation()
+          const fallbackCaptions = await CapDeriv.get_captions(input.videoUrl);
+          if (fallbackCaptions) {
+            output = { captions: fallbackCaptions };
+            logger.log(`Fallback captions used: ${fallbackCaptions}`);
+          } else {
+            logger.log("No fallback captions available.");
+          }
+        }
+        logger.log(`Final captions: ${output.captions}`);
+      }
+      return output!;
+    });
