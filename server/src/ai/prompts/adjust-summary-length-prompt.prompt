@@ -1,0 +1,10 @@
+---
+model: googleai/gemini-2.0-flash
+input:
+  schema:
+    adjustSummaryInputSchema
+output:
+  schema:
+    adjustSummaryOutputSchema
+---
+Summarize the following text to a {{length}} length:\n\n{{text}}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caption Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="card">
+        <label for="sourceType">Select Source:</label>
+        <select id="sourceType">
+            <option value="YouTubeUrl">YouTubeUrl</option>
+            <option value="WebPage">WebPage</option>
+        </select>
+
+        <label for="urlInput">Enter URL:</label>
+        <input type="text" id="urlInput" placeholder="Enter URL here...">
+
+        <button id="getCaptions">Get Captions</button>
+    <div id="captionsCard" class="card">
+    </div>
+    <div id="summaryCard" class="card">
+    </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

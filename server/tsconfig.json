@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node", 
+    // moduleResolution Added after gettign error Error: Cannot find module '@/ai/flows/get-video-captions
+    // this ensures .js fiels to refer @/ with ./
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    // "resolveJsonModule": true,  // Added after gettign error Error: Cannot find module '@/ai/flows/get-video-captions
+    "outDir": "./dist", 
+    "rootDir": "./src",
+    "typeRoots": [
+            "./src/typings",
+            "../node_modules/@types"
+        ]
+  },
+  "include": ["src", "/src/typings/spacy-nlp.d.ts" ]
+}
