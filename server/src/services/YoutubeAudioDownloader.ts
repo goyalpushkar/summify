@@ -293,4 +293,19 @@ export class YoutubeAudioDownloader {
           this.logger.error(`saveStream: Printing Error during download or conversion for ${videoUrl}: ${data}`);
         });
 
-        const ffmpegCommand = fluentFfmpegIn
+        const ffmpegCommand = fluentFfmpegInstance
+        .audioCodec('libmp3lame')
+        .toFormat('mp3')
+        .on('end', () => {
+          this.logger.info(`saveStream: Audio download and conversion finished for ${videoUrl}`);
+          resolve(outputFilePath);
+        })
+        .on('error', (err) => {
+          this.logger.error(`saveStream: Error during download or conversion for ${videoUrl}: ${err}`);
+          reject(err);
+        })
+        .save(outputFilePath);
+    });
+  }
+
+}
